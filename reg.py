@@ -46,7 +46,7 @@ def submit():
 
 
     if firstnameEntry.get()=='' or lastnameEntry.get()=='' or emailentry.get()=='' or gender.get()=='' \
-            or usernameEntry.get()=='' or passwordEntry.get()=='' or \
+            or variable1.get()==''or usernameEntry.get()=='' or passwordEntry.get()=='' or \
             renterpasswordEntry.get()=='':
             messagebox.showerror('Alert!', 'All Fields must be entered') #this is to check if all the entry fields are
             # empty if it is true it'll show a msgbox error
@@ -69,8 +69,8 @@ def submit():
             cur.execute(query)
 
             query='create table personaldata (id int auto_increment primary key not null, firstname varchar(40), ' \
-                  'lastname varchar(40), email varchar(40), gender varchar(40), ' \
-                  'username varchar(40), passwrd varchar(10), ' \
+                  'lastname varchar(40), email varchar(40), gender varchar(40), professional varchar(40),' \
+                  'username varchar(40), password varchar(10), ' \
                   'confirmpasswrd varchar(10))'
             cur.execute(query)
             # messagebox.showinfo('Success','Database was created successfully')
@@ -78,9 +78,9 @@ def submit():
         except:
             cur.execute('use p_registration')
             #2nd section
-        query='insert into personaldata(firstname, lastname, email, gender,  username, passwrd, confirmpasswrd)' \
-              ' values(%s,%s,%s,%s,%s,%s,%s)'
-        cur.execute(query,(firstnameEntry.get(), lastnameEntry.get(), emailentry.get(), gender.get(),
+        query='insert into personaldata(firstname, lastname, email, gender,professional,  username, password, confirmpasswrd)' \
+              ' values(%s,%s,%s,%s,%s,%s,%s,%s)'
+        cur.execute(query,(firstnameEntry.get(), lastnameEntry.get(), emailentry.get(), gender.get(),variable1.get(),
                            usernameEntry.get(),passwordEntry.get(), renterpasswordEntry.get()))
         db.commit() #to execute the change
         db.close()
@@ -94,6 +94,7 @@ def submit():
         passwordEntry.delete(0, END)
         renterpasswordEntry.delete(0, END)
         gender.set(0)
+        variable1.set('Select Professional')
         
 
         windows.destroy()
@@ -105,8 +106,9 @@ firstname = StringVar()
 lastname = StringVar()
 email = StringVar()
 gender = StringVar()
+variable1=StringVar()
 username = StringVar()
-passwrd = StringVar()
+passwrod = StringVar()
 confirmpasswrd = StringVar()
 
 # frame=Frame(windows)
@@ -167,6 +169,19 @@ genderRadio1.place(x=240, y=200)
 genderRadio2=Radiobutton(windows, text='Female', variable=gender, value='Female', font='tahoma 13 bold')
 # genderRadio2.deselect()
 genderRadio2.place(x=350, y=200)
+
+professionalLabel=Label(windows, text='Select Professional', fg='#97FFFF', bg='black', font=('Calibre', 13, 'bold'))
+professionalLabel.place(x=10, y=250)
+
+#setting variable for integers for OptionMenu
+pro=['student','teacher','principal']
+
+variable1.set('Select Professional')
+
+professionalLabelDropdown=OptionMenu(windows, variable1, *pro)
+professionalLabelDropdown.place(x=240, y=250)
+
+professionalLabelDropdown.config(width=18, font=('Calibre', 13, 'bold'),  fg='black')
 
 
 
